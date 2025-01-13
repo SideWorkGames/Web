@@ -1,59 +1,45 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
+<html>
+<head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>셀럽마녀</title>
-  </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=1200 height=1400 tabindex="-1" style="width: 1200px; height: 1400px; background: #231F20"></canvas>
-    <script src="Build/KLW.loader.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        body {
+            margin: 0;
+            overflow: auto; /* Enable browser scrolling */
+        }
+        #unity-container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        #unity-canvas {
+            width: 100%;
+            height: 800px; /* Set canvas height to allow scrolling */
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
     <script>
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-
-        var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        canvas.style.position = "fixed";
-
-        document.body.style.textAlign = "left";
-      }
-
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/KLW.data.unityweb",
-        frameworkUrl: "Build/KLW.framework.js.unityweb",
-        codeUrl: "Build/KLW.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "CelebrityWitch",
-        productVersion: "1.0",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-      });
-
-      document.addEventListener("wheel", (event) => {
-        // Unity 캔버스 요소를 가져옴
-        const canvas = document.getElementById("unity-canvas");
-
-        // 브라우저 스크롤 동작 허용
-        if (canvas) {
-            canvas.style.pointerEvents = "none"; // 캔버스가 마우스 이벤트를 차단하지 않도록 설정
-        }
-
-        // 기본 브라우저의 스크롤 이벤트가 동작하도록 설정
-        window.scrollBy(0, event.deltaY);
-        
-        if (canvas) {
-            canvas.style.pointerEvents = "auto"; // 이후 다시 캔버스 활성화
-        }
-    });
-
+        document.addEventListener("wheel", (event) => {
+            const canvas = document.getElementById("unity-canvas");
+            if (canvas) {
+                canvas.style.pointerEvents = "none"; // Allow scroll to pass through canvas
+            }
+            window.scrollBy(0, event.deltaY); // Scroll the browser window
+            if (canvas) {
+                canvas.style.pointerEvents = "auto"; // Re-enable canvas interactions
+            }
+        });
     </script>
-  </body>
+</head>
+<body>
+    <div id="unity-container">
+        <canvas id="unity-canvas"></canvas>
+    </div>
+</body>
 </html>
